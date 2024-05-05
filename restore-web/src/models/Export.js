@@ -30,4 +30,5 @@ class Export {
     getForecastInsight() {
       return this.forecastInsight;
     }
+    
 }

@@ -1,5 +1,6 @@
 class Import {
     constructor () {
+        this.data = [];
         this.isSnackbarVisible = false;
         this.isErrorSnackbarVisible = false;
         this.listeners = [];
@@ -30,5 +31,15 @@ class Import {
     getIsErrorSnackbarVisible() {
         return this.isErrorSnackbarVisible;
     }
+
+    setData(data){
+        this.data = data;
+        this.notify();
+    }
+
+    getData(){
+        return this.data;
+    }
+    
 }
 

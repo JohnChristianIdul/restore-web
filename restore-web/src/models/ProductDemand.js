@@ -1,8 +1,5 @@
 class ProductDemand {
     constructor() {
-      this.productID = null;
-      this.productName = '';
-      this.productDemand = null;
       this.isLoadingDemand = false;
       this.prodData = [];
       this.jsonData = [];
@@ -16,21 +13,6 @@ class ProductDemand {
   
     notify() {
       this.listeners.forEach(listener => listener());
-    }
-  
-    setProductID(id) {
-      this.productID = id;
-      this.notify();
-    }
-  
-    setProductName(name) {
-      this.productName = name;
-      this.notify();
-    }
-  
-    setProductDemand(demand) {
-      this.productDemand = demand;
-      this.notify();
     }
   
     setIsLoadingDemand(value) {
@@ -53,18 +35,6 @@ class ProductDemand {
       this.notify();
     }
   
-    getProductID() {
-      return this.productID;
-    }
-  
-    getProductName() {
-      return this.productName;
-    }
-  
-    getProductDemand() {
-      return this.productDemand;
-    }
-  
     getIsLoadingDemand() {
       return this.isLoadingDemand;
     }
@@ -80,4 +50,5 @@ class ProductDemand {
     getError() {
       return this.error;
     }
+    
 }
