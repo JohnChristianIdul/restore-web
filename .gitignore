@@ -1,5 +1,5 @@
 node_modules
 /node_modules/
 /.idea
-restore-web/restore-server/.flaskenv
-restore-web/restore-server/.env
+.flaskenv
+.env
