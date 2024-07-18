@@ -1,0 +1,51 @@
+.main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    margin-top: 20px;
+}
+
+.logo {
+    height: auto;
+    margin-left: 50px;
+}
+
+.hello {
+    color: #9D9D9D;
+    text-align: end;
+    margin-right: 80px;
+}
+
+/* For laptop/computer monitor */
+@media screen and (min-width: 768px) and (max-width: 1440px) {
+    .logo {
+        height: 70px;
+        width: 70px;
+    }
+    h2 {
+        font-size: 30px;
+    }
+}
+
+/* For tablets */
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    .logo {
+        height: 30px;
+        width: 30px;
+    }
+    h2 {
+        font-size: 15px;
+    }
+}
+
+/* For phones */
+@media screen and (max-width: 480px) {
+    .logo {
+        height: 25px;
+        width: 25px;
+    }
+    h2 {
+        font-size: 15px;
+    }
+}

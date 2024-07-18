@@ -1,0 +1,63 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 50px;
+    border-radius: 10px;
+    background-color: #191919;
+  }
+  
+  .brand-logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+  
+  .login-form h2,
+  .login-form h4 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 10px; /* Increased margin between the texts */
+  }
+  
+  .login-form h4 {
+    margin-top: 10px; /* Increased margin between the texts */
+  }
+  
+  .login-form input {
+    margin-bottom: 10px;
+    height: 35px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 20px;
+  }
+  
+  .login-form button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4caf50;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  
+  .sign-up-link {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .sign-up-link a {
+    text-decoration: none;
+    color: #30a75f;
+    margin-bottom: 20px;
+  }
+  
