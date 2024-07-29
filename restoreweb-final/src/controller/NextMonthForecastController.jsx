@@ -1,35 +1,50 @@
-import React, { useReducer, useEffect } from "react";
-import NextMonthForecastView from "../Views/NextMonthForecastView";
-import { initialState as salesInitialState, reducer as salesReducer, actionTypes as salesActionTypes } from "./SalesModel";
-import { initialState as forecastInitialState, reducer as forecastReducer, actionTypes as forecastActionTypes } from "./ForecastModel";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import NextMonthForecastView from "../views/NextMonthForecastView.jsx";
+import {useForecastData} from "../models/ForecastModel.jsx";
 
 const NextMonthForecastController = () => {
   // Initialize state and reducer for sales data and forecast data
-  const [salesState, salesDispatch] = useReducer(salesReducer, salesInitialState);
-  const [forecastState, forecastDispatch] = useReducer(forecastReducer, forecastInitialState);
+  const { state, setForecastData, setSalesData, setLoading, setError } = useForecastData();
+  const [shouldFetch, setShouldFetch] = useState(true);
+
+  const handleCardClick = () => {
+    setShouldFetch(true);
+  };
 
   // Fetch sales data from API
   useEffect(() => {
+    if (!shouldFetch) return;
+
     const fetchData = async () => {
+      setLoading(true);
+
       try {
-        // Example: Fetch sales data from an API
-        const salesresponse = await fetch("sales-api-endpoint");
-        const forecastresponse = await fetch("api-for-forecast");
-        const forecastdata = await forecastresponse.json();
-        const salesdata = await salesresponse.json();
-        // Dispatch action to update sales data in the state
-        salesDispatch({ type: salesActionTypes.SET_SALES_DATA, newData: salesdata });
-        forecastDispatch({ type: forecastActionTypes.SET_FORECAST_DATA, newData: forecastdata});
+        const [forecastresponse, salesresponse] =
+            await Promise.all([axios.get("http://127.0.0.1:5000/predict"), [axios.get("http://127.0.0.1:5000/get_last_item")]]);
+        const data = forecastresponse.data;
+        const data2 = salesresponse.data;
+        setForecastData(data);
+        setSalesData(data2);
+        setShouldFetch(false);  // Stop further fetching after getting the data
       } catch (error) {
-        console.error("Error fetching sales data:", error);
+        setError("Error fetching forecast and sales data");
+        console.error("Error fetching forecast and sales data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [shouldFetch, setLoading, setForecastData, setSalesData, setError]);
 
-  // Pass both salesData and forecastData as props to the view component
-  return <NextMonthForecastView forecastData={forecastState.forecastData} salesData={salesState.salesData} />;
+  // Pass both salesData and forecastData and salesData as props to the view component
+  return <NextMonthForecastView
+            forecastData={state.forecastData}
+            salesData={state.salesData}
+            isLoading={state.isLoading}
+            error={state.error}
+            onCardClick={handleCardClick}/>;
 };
 
 export default NextMonthForecastController;

@@ -1,9 +1,15 @@
-import React, { useEffect } from "react";
-import InsightView from "./InsightView";
-import { useInsight } from "./InsightModel";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import InsightView from "../views/InsightView.jsx";
+import { useForecastData } from "../models/ForecastModel.jsx";
 
 const InsightController = ({ forecastData }) => {
-  const { insight, setInsight } = useInsight();
+  const { state, setInsight } = useForecastData();
+  const [shouldFetch, setShouldFetch] = useState(true);
+
+  const handleCardClick = () => {
+    setShouldFetch(true);
+  };
 
   // Generate insight based on forecast data
   useEffect(() => {

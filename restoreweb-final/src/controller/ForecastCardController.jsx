@@ -1,29 +1,46 @@
-import React, { useReducer, useEffect } from "react";
-import ForecastCardView from "./ForecastCardView";
-import { initialState, reducer, actionTypes } from "./ForecastModel";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ForecastCardView from "../views/ForecastCardView.jsx";
+import { useForecastData } from "../models/ForecastModel.jsx";
 
 const ForecastCardController = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state, setForecastData, setLoading, setError } = useForecastData();
+  const [shouldFetch, setShouldFetch] = useState(true);
 
-  // Example: Fetch forecast data from API
+  const handleCardClick = () => {
+    setShouldFetch(true);
+  };
+
   useEffect(() => {
-    // Make API call or fetch data here
+    if (!shouldFetch) return;
+
     const fetchData = async () => {
+      setLoading(true);
+
       try {
-        // Example: Fetch forecast data from an API
-        const response = await fetch("your-api-endpoint");
-        const data = await response.json();
-        // Dispatch action to update forecast data in the state
-        dispatch({ type: actionTypes.SET_FORECAST_DATA, newData: data });
+        const response = await axios.get("http://127.0.0.1:5000/predict");
+        const data = response.data;
+        setForecastData(data);
+        setShouldFetch(false);  // Stop further fetching after getting the data
       } catch (error) {
+        setError("Error fetching forecast data");
         console.error("Error fetching forecast data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [shouldFetch, setLoading, setForecastData, setError]);
 
-  return <ForecastCardView forecastText={state.forecastData} />;
+  return (
+      <ForecastCardView
+          forecastData={state.forecastData}
+          isLoading={state.isLoading}
+          error={state.error}
+          onCardClick={handleCardClick}
+      />
+  );
 };
 
 export default ForecastCardController;

@@ -2,12 +2,11 @@ import React from 'react';
 import Header from './views/Header.jsx';
 import SubHeader from "./views/Sub-header.jsx";
 import './index.css';
-import ForecastCardView from "./views/ForecastCardView.jsx";
-import NextMonthForecastView from "./views/NextMonthForecastView.jsx";
-import ProductDemandForecastView from "./views/ProductDemandForecastView.jsx";
+import ForecastCardController from "./controller/ForecastCardController.jsx";
+import NextMonthForecastController from "./controller/NextMonthForecastController.jsx";
+import ProductDemandForecastController from "./controller/ProductDemandForecastController.jsx";
 import ForecastGraphView from "./views/ForecastGraphView.jsx";
-import InsightView from "./views/InsightView.jsx";
-
+import InsightController from "./controller/InsightController.jsx"
 function App() {
   return (
       <>
@@ -15,16 +14,15 @@ function App() {
         <SubHeader />
         <div className="flex-col">
             <div className="float-left w-1/3">
-                <ForecastCardView />
-                <NextMonthForecastView />
-                <ProductDemandForecastView />
-                <InsightView />
+                <ForecastCardController />
+                <NextMonthForecastController />
+                <ProductDemandForecastController />
+                {/*<InsightController />*/}
             </div>
             <div className="float-right w-2/3">
                 <ForecastGraphView />
             </div>
         </div>
-
       </>
   );
 }

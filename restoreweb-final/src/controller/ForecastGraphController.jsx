@@ -1,35 +1,48 @@
-import React, { useReducer, useEffect } from "react";
-import ForecastGraphView from "./ForecastGraphView";
-import { initialState as salesInitialState, reducer as salesReducer, actionTypes as salesActionTypes } from "./SalesModel";
-import { initialState as forecastInitialState, reducer as forecastReducer, actionTypes as forecastActionTypes } from "./ForecastModel";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import ForecastGraphView from "../views/ForecastGraphView.jsx";
+import { useForecastData } from "../models/ForecastModel.jsx";
 
 const ForecastGraphController = () => {
-  // Initialize state and reducer for sales data and forecast data
-  const [salesState, salesDispatch] = useReducer(salesReducer, salesInitialState);
-  const [forecastState, forecastDispatch] = useReducer(forecastReducer, forecastInitialState);
+ const{state, setForecastGraphData, setLoading, setError} = useForecastData();
+ const[shouldFetch, setShouldFetch] = useState(true);
+
+  const handleCardClick = () => {
+    setShouldFetch(true);
+  };
 
   // Fetch sales data from API
   useEffect(() => {
+    if(!shouldFetch) return;
+
     const fetchData = async () => {
+      setLoading(true);
+
       try {
         // Example: Fetch sales data from an API
-        const salesresponse = await fetch("sales-api-endpoint");
-        const forecastresponse = await fetch("api-for-forecast");
-        const forecastdata = await forecastresponse.json();
-        const salesdata = await salesresponse.json();
+        const response = await fetch("http://127.0.0.1:5000/line_graph_data");
+        const data = response.data;
         // Dispatch action to update sales data in the state
-        salesDispatch({ type: salesActionTypes.SET_SALES_DATA, newData: salesdata });
-        forecastDispatch({ type: forecastActionTypes.SET_FORECAST_DATA, newData: forecastdata});
+        setForecastGraphData(data);
+        setShouldFetch(false);
       } catch (error) {
-        console.error("Error fetching sales data:", error);
+        setError("Error fetching graph data");
+        console.error("Error fetching graph data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [shouldFetch, setLoading, setForecastGraphData, setError]);
 
   // Pass both salesData and forecastData as props to the view component
-  return <ForecastGraphView salesData={salesState.salesData} forecastData={forecastState.forecastData} />;
+  return <ForecastGraphView
+      graphData={state.forecastGraphData}
+      isLoading={state.isLoading}
+      error={state.error}
+      onCardClick={handleCardClick}
+  />;
 };
 
 export default ForecastGraphController;

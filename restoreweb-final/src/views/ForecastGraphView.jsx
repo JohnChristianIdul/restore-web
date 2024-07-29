@@ -22,7 +22,7 @@ const valueFormatter = function (number) {
     return '$ ' + new Intl.NumberFormat('us').format(number).toString();
 };
 
-const ForecastGraphView = () => {
+const ForecastGraphView = ({graphData}) => {
     return (
         <>
             <div className="ml-20 mr-20 mt-7 justify-start">
