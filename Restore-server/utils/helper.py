@@ -7,6 +7,8 @@ import pandas as pd
 import statsmodels.api as sm
 from flask import jsonify
 import google.generativeai as palm
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+import torch
 
 trained_models = {}
 
@@ -76,6 +78,10 @@ def get_sales_performance_history():
 
 
 def parse_date_xy(input_date):
+    # If input_date is a Timestamp object, convert it to string first
+    if isinstance(input_date, pd.Timestamp):
+        input_date = input_date.strftime('%y-%m')
+
     # Split the input date into parts
     parts = input_date.split('-')
 
@@ -172,3 +178,23 @@ def get_forecast_insight(data):
         return jsonify(response.result)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+def forecast_insight(data):
+    model_id = "AIFS/Llama3-8x8B-Time-Agents/"
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+    prompt = """Explain the sales data fluctuations. Provide the Seasonal Fluctuation, Peak Sales Period, Low Sales Period
+                           Abrupt Fluctuations, and Potential External Factors. Only provide these answers.""" + data
+
+    chat_pipeline = pipeline(
+        "text-generation",
+        model=model_id,
+        tokenizer=tokenizer,
+        model_kwargs={"torch_dtype": torch.float16, "load_in_4bit": True},
+    )
+
+    messages = [{"role": "user", "content": prompt}]
+    prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    outputs = chat_pipeline(prompt, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+    print(outputs[0]["generated_text"])

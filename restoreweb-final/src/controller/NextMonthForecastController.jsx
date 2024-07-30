@@ -20,13 +20,13 @@ const NextMonthForecastController = () => {
       setLoading(true);
 
       try {
-        const [forecastresponse, salesresponse] =
-            await Promise.all([axios.get("http://127.0.0.1:5000/predict"), [axios.get("http://127.0.0.1:5000/get_last_item")]]);
-        const data = forecastresponse.data;
-        const data2 = salesresponse.data;
+        const response = await axios.get("http://127.0.0.1:5000/predict");
+        const data = response.data;
         setForecastData(data);
-        setSalesData(data2);
-        setShouldFetch(false);  // Stop further fetching after getting the data
+        const response1 = await axios.get("http://127.0.0.1:5000//get_last_item");
+        const data1 = response1.data;
+        setSalesData(data1);
+        setShouldFetch(false);    // Stop further fetching after getting the data
       } catch (error) {
         setError("Error fetching forecast and sales data");
         console.error("Error fetching forecast and sales data:", error);
@@ -36,7 +36,7 @@ const NextMonthForecastController = () => {
     };
 
     fetchData();
-  }, [shouldFetch, setLoading, setForecastData, setSalesData, setError]);
+  }, [shouldFetch]);
 
   // Pass both salesData and forecastData and salesData as props to the view component
   return <NextMonthForecastView

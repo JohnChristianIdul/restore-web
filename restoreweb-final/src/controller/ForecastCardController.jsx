@@ -4,7 +4,7 @@ import ForecastCardView from "../views/ForecastCardView.jsx";
 import { useForecastData } from "../models/ForecastModel.jsx";
 
 const ForecastCardController = () => {
-  const { state, setForecastData, setLoading, setError } = useForecastData();
+  const { state, setForecastData, setSalesData, setLoading, setError } = useForecastData();
   const [shouldFetch, setShouldFetch] = useState(true);
 
   const handleCardClick = () => {
@@ -31,7 +31,7 @@ const ForecastCardController = () => {
     };
 
     fetchData();
-  }, [shouldFetch, setLoading, setForecastData, setError]);
+  }, [shouldFetch]);
 
   return (
       <ForecastCardView

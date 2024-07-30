@@ -3,12 +3,14 @@ import csv
 import re
 from flask import Flask, request, render_template, jsonify
 from utils.helper import train_arima_model, save_csv_file, get_last_item_from_json, get_sales_performance_history, \
-    trained_models, parse_date_xy, detect_date_format, date_parser, process_data, get_forecast_insight
+    trained_models, parse_date_xy, detect_date_format, date_parser, process_data, get_forecast_insight, forecast_insight
 import os, pickle, json
 import pandas as pd
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config.from_pyfile('settings.py')
+CORS(app)
 
 
 @app.route('/upload_demands')
@@ -432,16 +434,16 @@ def sales_performance_history():
     return get_sales_performance_history()
 
 
-@app.route('/prediction insight', methods=['GET'])
+@app.route('/prediction_insight', methods=['GET'])
 def prediction_insight():
-    with open('files/loaded_data.csv', 'r') as file:
+    with open('uploads/loaded_data.csv', 'r') as file:
         csv_reader = csv.DictReader(file)
         data = list(csv_reader)
 
     json_string = json.dumps(data)
 
     return get_forecast_insight(json_string)
-
+    # return forecast_insight(json_string)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
