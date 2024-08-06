@@ -2,8 +2,9 @@
 import csv
 import re
 from flask import Flask, request, render_template, jsonify
-from utils.helper import train_arima_model, save_csv_file, get_last_item_from_json, get_sales_performance_history, \
-    trained_models, parse_date_xy, detect_date_format, date_parser, process_data, get_forecast_insight, forecast_insight
+from utils.helper import (train_arima_model, save_csv_file, get_last_item_from_json, get_sales_performance_history, \
+    trained_models, parse_date_xy, detect_date_format, date_parser, process_data, get_forecast_insight, forecast_insight,
+                          get_month_name)
 import os, pickle, json
 import pandas as pd
 from flask_cors import CORS
@@ -341,7 +342,7 @@ def predict_endpoint():
         last_available_month = actual_data.index[-1]
         print(last_available_month)
         forecast_steps = 1
-        future_index = pd.date_range(start=last_available_month, periods=forecast_steps + 1, freq='M')[1:]
+        future_index = pd.date_range(start=last_available_month, periods=forecast_steps + 1, freq='ME')[1:]
 
         predictions = round(trained_model.forecast(steps=forecast_steps, index=future_index), 2)
         predictions_list = predictions.tolist()
@@ -372,7 +373,10 @@ def get_sales_data():
         monthly_sales_data = actual_data.groupby(actual_data['Month'].dt.strftime('%Y-%m'))['Sales'].sum().reset_index()
 
         # Group by 'Year' and calculate the sum for each year
-        yearly_sales_data = actual_data.groupby(actual_data['Month'].dt.year)['Sales'].sum().reset_index()
+        if actual_data.columns[0] == "Month":
+            original_column_name = actual_data.columns[0]
+            actual_data = actual_data.rename(columns={original_column_name: 'Year'})
+        yearly_sales_data = actual_data.groupby(actual_data['Year'].dt.strftime('%Y'))['Sales'].sum().reset_index()
 
         return jsonify({
             'monthly_sales_data': monthly_sales_data.to_dict(orient='records'),
@@ -407,11 +411,11 @@ def line_graph_data():
 
         # Format the data for the LineGraph
         line_graph_data = [
-            {"Month": item['Month'].strftime('%Y-%m'), "Sales": item['Sales']} for _, item in last_3_items.iterrows()
+            {"Month": get_month_name(item['Month'].strftime('%Y-%m')), "Sales": item['Sales']} for _, item in last_3_items.iterrows()
         ]
 
         line_graph_data.extend(
-            [{"Month": month.strftime('%Y-%m'), "Sales": round(prediction, 2)} for month, prediction in
+            [{"Month": get_month_name(month.strftime('%Y-%m')), "Sales": round(prediction, 2)} for month, prediction in
              zip(future_index, predictions)]
         )
 
@@ -427,7 +431,6 @@ def line_graph_data():
 
     except Exception as e:
         return jsonify({"error": str(e)})
-
 
 @app.route('/sales_performance_history', methods=['GET'])
 def sales_performance_history():
