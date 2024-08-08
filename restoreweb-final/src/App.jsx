@@ -16,34 +16,15 @@ import Landing from './views/Landing.jsx';
 function App() {
   return (
       <>
-        
-        {/* <SignUpView /> */}
-
-
         <BrowserRouter>
         <TopBar/>
         
           <Routes>
-            <Route path='/landing' element= { <Landing /> }></Route>
+            <Route path='/' element= { <Landing /> }></Route>
             <Route path='/sign-up' element = {<SignUpView />}> </Route>
             <Route path='/login' element = {<LoginView />}></Route>
           </Routes>
         </BrowserRouter>
-        {/* <LoginView/> */}
-        {/* <Header /> */}
-        {/* <SubHeader /> */}
-
-        {/* <div className="flex-col">
-            <div className="float-left w-1/3"> */}
-                {/* <ForecastCardController /> */}
-                {/* <NextMonthForecastController /> */}
-                {/*<ProductDemandForecastController />*/}
-                {/*<InsightController />*/}
-            {/* </div>
-            <div className="float-right w-2/3">
-                <ForecastGraphView />
-            </div>
-        </div> */}
       </>
   );
 }
