@@ -13,8 +13,10 @@ export const handleLogin = async (e, userCredentials, navigate) => {
     try {
         const response = await loginUser(userCredentials);
         console.log(response.data);
-        navigate('/sign-up');
+        sessionStorage.setItem('username', userCredentials.username);   
+        navigate('/forecast');
     } catch {
         console.error('Error Login: ', error);
     }
 }
+
