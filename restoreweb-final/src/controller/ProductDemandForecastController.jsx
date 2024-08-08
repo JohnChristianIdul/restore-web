@@ -37,12 +37,12 @@ const ProductDemandForecastController = () => {
   console.log("State data:", state.productForecastData); // Debug log
 
   return (
-    <ProductDemandForecastView
-      forecastData={state.productForecastData}
-      isLoading={state.isLoading}
-      error={state.error}
-      onCardClick={handleCardClick}
-    />
+      <ProductDemandForecastView
+          forecastData={state.productForecastData}
+          isLoading={state.isLoading}
+          error={state.error}
+          onCardClick={handleCardClick}
+      />
   );
 };
 

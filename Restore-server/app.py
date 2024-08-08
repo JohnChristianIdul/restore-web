@@ -3,7 +3,7 @@ import csv
 import re
 from flask import Flask, request, render_template, jsonify
 from utils.helper import (train_arima_model, save_csv_file, get_last_item_from_json, get_sales_performance_history, \
-    trained_models, parse_date_xy, detect_date_format, date_parser, process_data, get_forecast_insight, forecast_insight,
+    trained_models, parse_date_xy, detect_date_format, date_parser, process_data, get_sales_insight, forecast_insight,
                           get_month_name)
 import os, pickle, json
 import pandas as pd
@@ -445,7 +445,7 @@ def prediction_insight():
 
     json_string = json.dumps(data)
 
-    return get_forecast_insight(json_string)
+    return get_sales_insight(json_string)
     # return forecast_insight(json_string)
 
 if __name__ == '__main__':
