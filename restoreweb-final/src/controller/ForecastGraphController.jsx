@@ -1,48 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import ForecastGraphView from "../views/ForecastGraphView.jsx";
-import { useForecastData } from "../models/ForecastModel.jsx";
+import { useGraphData } from "../models/ForecastGraphDataModel.jsx";
 
 const ForecastGraphController = () => {
- const{state, setForecastGraphData, setLoading, setError} = useForecastData();
- const[shouldFetch, setShouldFetch] = useState(true);
+    const { state, setGraphData, setLoading, setError } = useGraphData();
 
-  const handleCardClick = () => {
-    setShouldFetch(true);
-  };
+    useEffect(() => {
+        const fetchGraphData = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get("http://127.0.0.1:5000/line_graph_data");
+                setGraphData(response.data);
+            } catch (error) {
+                setError("Error fetching graph data");
+                console.error("Error fetching graph data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  // Fetch sales data from API
-  useEffect(() => {
-    if(!shouldFetch) return;
+        fetchGraphData();
+    }, []); // Empty dependency array ensures this runs only once
 
-    const fetchData = async () => {
-      setLoading(true);
-
-      try {
-        // Example: Fetch sales data from an API
-        const response = await fetch("http://127.0.0.1:5000/line_graph_data");
-        const data = response.data;
-        // Dispatch action to update sales data in the state
-        setForecastGraphData(data);
-        setShouldFetch(false);
-      } catch (error) {
-        setError("Error fetching graph data");
-        console.error("Error fetching graph data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [shouldFetch, setLoading, setForecastGraphData, setError]);
-
-  // Pass both salesData and forecastData as props to the view component
-  return <ForecastGraphView
-      graphData={state.forecastGraphData}
-      isLoading={state.isLoading}
-      error={state.error}
-      onCardClick={handleCardClick}
-  />;
+    return (
+        <ForecastGraphView
+            graphData={state.forecastGraphData}
+            isLoading={state.isLoading}
+            error={state.error}
+        />
+    );
 };
 
 export default ForecastGraphController;

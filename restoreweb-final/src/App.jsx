@@ -1,17 +1,18 @@
 import React from 'react';
 import Header from './views/Header.jsx';
-import SubHeader from "./views/Sub-header.jsx";
 import './index.css';
 import ForecastCardController from "./controller/ForecastCardController.jsx";
 import NextMonthForecastController from "./controller/NextMonthForecastController.jsx";
 // import ProductDemandForecastController from "./controller/ProductDemandForecastController.jsx";
-import ForecastGraphView from "./views/ForecastGraphView.jsx";
+import ForecastGraphController from "./controller/ForecastGraphController.jsx";
 import TopBar from './views/TopBar.jsx';
 import LoginView from './views/LoginView.jsx';
 import SignUpView from './views/SignUpView.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './views/Landing.jsx';
-// import InsightController from "./controller/InsightController.jsx"
+import InsightController from "./controller/InsightController.jsx"
+import ExportController from "./controller/ExportController.jsx";
+import SubHeader from "./views/SubHeader.jsx";
 
 function App() {
   return (

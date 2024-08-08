@@ -1,32 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import NextMonthForecastView from "../views/NextMonthForecastView.jsx";
-import {useForecastData} from "../models/ForecastModel.jsx";
+import { useForecastData } from "../models/ForecastDataModel.jsx";
+import { useSalesData } from "../models/SalesDataModel.jsx";
 
 const NextMonthForecastController = () => {
-  // Initialize state and reducer for sales data and forecast data
-  const { state, setForecastData, setSalesData, setLoading, setError } = useForecastData();
-  const [shouldFetch, setShouldFetch] = useState(true);
+  const { state: forecastState, setForecastData, setLoading, setError } = useForecastData();
+  const { state: salesState, setSalesData } = useSalesData();
 
-  const handleCardClick = () => {
-    setShouldFetch(true);
-  };
-
-  // Fetch sales data from API
   useEffect(() => {
-    if (!shouldFetch) return;
-
     const fetchData = async () => {
       setLoading(true);
-
       try {
-        const response = await axios.get("http://127.0.0.1:5000/predict");
-        const data = response.data;
-        setForecastData(data);
-        const response1 = await axios.get("http://127.0.0.1:5000//get_last_item");
-        const data1 = response1.data;
-        setSalesData(data1);
-        setShouldFetch(false);    // Stop further fetching after getting the data
+        const forecastResponse = await axios.get("http://127.0.0.1:5000/predict");
+        setForecastData(forecastResponse.data);
+
+        const salesResponse = await axios.get("http://127.0.0.1:5000/get_last_item");
+        setSalesData(salesResponse.data);
       } catch (error) {
         setError("Error fetching forecast and sales data");
         console.error("Error fetching forecast and sales data:", error);
@@ -36,15 +26,16 @@ const NextMonthForecastController = () => {
     };
 
     fetchData();
-  }, [shouldFetch]);
+  }, []); // Empty dependency array ensures this runs only once
 
-  // Pass both salesData and forecastData and salesData as props to the view component
-  return <NextMonthForecastView
-            forecastData={state.forecastData}
-            salesData={state.salesData}
-            isLoading={state.isLoading}
-            error={state.error}
-            onCardClick={handleCardClick}/>;
+  return (
+      <NextMonthForecastView
+          forecastData={forecastState.forecastData}
+          salesData={salesState.salesData}
+          isLoading={forecastState.isLoading}
+          error={forecastState.error}
+      />
+  );
 };
 
 export default NextMonthForecastController;
