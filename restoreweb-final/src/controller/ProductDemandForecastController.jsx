@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProductDemandForecastView from "../views/ProductDemandForecastView.jsx";
-import { useForecastData } from "../models/ForecastModel.jsx";
+import { useForecastData } from "../models/ProductDemandForecastModel.jsx";
 
 const ProductDemandForecastController = () => {
   const { state, setProductForecastData, setLoading, setError } = useForecastData();

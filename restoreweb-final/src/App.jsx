@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Header from './views/Header.jsx';
-import SubHeader from './views/Sub-header.jsx';
 import './index.css';
 import ForecastCardController from "./controller/ForecastCardController.jsx";
 import NextMonthForecastController from "./controller/NextMonthForecastController.jsx";
@@ -9,9 +7,6 @@ import ForecastGraphView from "./views/ForecastGraphView.jsx";
 import ImportView from "./views/ImportView.jsx";
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast
-
-import React from 'react';
-import './index.css';
 import TopBar from './views/TopBar.jsx';
 import LoginView from './views/LoginView.jsx';
 import SignUpView from './views/SignUpView.jsx';
@@ -33,6 +28,10 @@ function App() {
     }));
   };
 
+  const handleBothFilesUploaded = () => {
+    setDataFetched(true);
+  };
+
   // Use useEffect to check file upload status
   useEffect(() => {
     if (filesData.demand && filesData.sales) {
@@ -44,17 +43,18 @@ function App() {
   }, [filesData]);
 
   return (
-      <>
-        <BrowserRouter>
-        <TopBar/>
-          <Route>
-            <Route path='/' element= { <Landing /> }></Route>
-            <Route path='/sign-up' element = {<SignUpView />}> </Route>
-            <Route path='/login' element = {<LoginView />}></Route>
-            <Route path='/forecast' element = {<Forecast />}></Route>
-          </Route>
-        </BrowserRouter>
-      </>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Landing />} />
+          <Route path='/sign-up' element={<SignUpView />} />
+          <Route path='/login' element={<LoginView />} />
+          <Route path='/import' element={<ImportView onBothFilesUploaded={handleBothFilesUploaded} />} />
+          <Route path='/forecast' element={<Forecast />} />
+        </Routes>
+        <ToastContainer /> {/* Add this line */}
+      </BrowserRouter>
+    </>
   );
 }
 
