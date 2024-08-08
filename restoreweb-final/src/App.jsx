@@ -5,19 +5,19 @@ import LoginView from './views/LoginView.jsx';
 import SignUpView from './views/SignUpView.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './views/Landing.jsx';
-import Forecast from "./Forecast.jsx";
+import ForecastView from "./views/ForecastView.jsx";
 
 function App() {
   return (
       <>
         <BrowserRouter>
         <TopBar/>
-          <Route>
+          <Routes>
             <Route path='/' element= { <Landing /> }></Route>
             <Route path='/sign-up' element = {<SignUpView />}> </Route>
             <Route path='/login' element = {<LoginView />}></Route>
-            <Route path'forecast' element = {<Forecast />}></Route>
-          </Route>
+            <Route path='/forecast' element = {<ForecastView />}></Route>
+          </Routes>
         </BrowserRouter>
       </>
   );

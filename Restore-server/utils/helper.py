@@ -190,7 +190,7 @@ def clean_text(text):
     return text.strip().replace('\n', ' ')
 
 
-def get_forecast_insight(data):
+def get_sales_insight(data):
     api_key = environ.get('GOOGLE_API_KEY')
 
     if not api_key:

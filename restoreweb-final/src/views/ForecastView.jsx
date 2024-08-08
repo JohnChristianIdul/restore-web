@@ -1,15 +1,14 @@
 import React from 'react';
-import Header from './views/Header.jsx';
-import './index.css';
-import ForecastCardController from "./controller/ForecastCardController.jsx";
-import NextMonthForecastController from "./controller/NextMonthForecastController.jsx";
+import Header from './Header.jsx';
+import '../index.css';
+import ForecastCardController from "../controller/ForecastCardController.jsx";
+import NextMonthForecastController from "../controller/NextMonthForecastController.jsx";
 // import ProductDemandForecastController from "./controller/ProductDemandForecastController.jsx";
-import ForecastGraphController from "./controller/ForecastGraphController.jsx";
-import InsightController from "./controller/InsightController.jsx"
-import ExportController from "./controller/ExportController.jsx";
-import SubHeader from "./views/SubHeader.jsx";
+import ForecastGraphController from "../controller/ForecastGraphController.jsx";
+import InsightController from "../controller/InsightController.jsx"
+import SubHeader from "./SubHeader.jsx";
 
-const Forecast = () => {
+const ForecastView = () => {
     return (
         <>
             <Header />
@@ -29,4 +28,4 @@ const Forecast = () => {
     );
 }
 
-export default Forecast;
+export default ForecastView;

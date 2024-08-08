@@ -437,7 +437,7 @@ def sales_performance_history():
     return get_sales_performance_history()
 
 
-@app.route('/prediction_insight', methods=['GET'])
+@app.route('/sales_insight', methods=['GET'])
 def prediction_insight():
     with open('uploads/loaded_data.csv', 'r') as file:
         csv_reader = csv.DictReader(file)
