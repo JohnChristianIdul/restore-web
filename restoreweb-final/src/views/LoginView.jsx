@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleLogin } from '../controller/LoginController';
+import TopBar from './TopBar';
 
 const LoginView = () => {
   const [username, setUsername] = useState('');
@@ -8,6 +9,8 @@ const LoginView = () => {
 
   const navTo = useNavigate();
   return (
+    <>
+    <TopBar/>
     <div className="flex items-center justify-center h-[90vh]">
         <div className="w-full max-w-md flex flex-col m-1 space-y-8 bg-gray-200 shadow-2xl rounded-2xl p-8 md:p-8">
         <div className="flex flex-col justify-center">
@@ -57,6 +60,7 @@ const LoginView = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
