@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast
 import '../styles/ImportView.css';
+import TopBar from './TopBar';
 
 const ImportView = ({ onFileSelect, onBothFilesUploaded }) => {
   const fileInputRef = useRef(null);
@@ -80,6 +81,8 @@ const ImportView = ({ onFileSelect, onBothFilesUploaded }) => {
   };
 
   return (
+    <>
+    <TopBar/>
     <div className="import-view">
       {loading && (
         <div className="loading-screen">
@@ -116,6 +119,7 @@ const ImportView = ({ onFileSelect, onBothFilesUploaded }) => {
         <p>To import files successfully, files must have column names (header). e.g. (product_Name, productSales, product_price)</p>
       </div>
     </div>
+    </>
   );
 };
 

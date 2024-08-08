@@ -39,9 +39,9 @@ function App() {
       <>
         <BrowserRouter>
           <Routes>
-            <Route path='/' element= { <Landing /> }></Route>
-            <Route path='/sign-up' element = {<SignUpView />}> </Route>
-            <Route path='/login' element = {<LoginView />}></Route>
+              <Route path='/' element= { <Landing /> }></Route>
+              <Route path='/sign-up' element = {<SignUpView />}> </Route>
+              <Route path='/login' element = {<LoginView />}></Route>
             <Route path='/forecast' element = {<ForecastView />}></Route>
           </Routes>
         </BrowserRouter>
