@@ -18,7 +18,7 @@ const ExportController = () => {
             console.log('forecast response: ', forecastResponse.data)
 
             // Fetch insight data
-            const insightResponse = await axios.get("http://127.0.0.1:5000/prediction_insight");
+            const insightResponse = await axios.get("http://127.0.0.1:5000/sales_insight");
             setInsightData(insightResponse.data);
             console.log('insight response: ', insightResponse.data)
 
