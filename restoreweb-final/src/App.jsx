@@ -16,7 +16,7 @@ function App() {
             <Route path='/' element= { <Landing /> }></Route>
             <Route path='/sign-up' element = {<SignUpView />}> </Route>
             <Route path='/login' element = {<LoginView />}></Route>
-            <Route path'forecast' element = {<Forecast />}></Route>
+            <Route path='/forecast' element = {<Forecast />}></Route>
           </Route>
         </BrowserRouter>
       </>
