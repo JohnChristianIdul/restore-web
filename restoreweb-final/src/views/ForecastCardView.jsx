@@ -14,7 +14,7 @@ const ForecastCardView = ({ forecastData, isLoading, error, onCardClick }) => {
     return (
         <Card className="mx-auto ml-12 mt-7 mb-3" onClick={onCardClick}>
             <p className="text-tremor-default text-tremor-content dark:text-dark-tremor-content text-xl pb-3">
-                Quarterly Sales
+                Forecast Sales
             </p>
             <p className="text-4xl text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">
                 {forecastData ? `$${forecastData.prediction}` : "$Placeholder"}

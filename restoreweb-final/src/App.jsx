@@ -10,6 +10,14 @@ import ImportView from "./views/ImportView.jsx";
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast
 
+import React from 'react';
+import './index.css';
+import TopBar from './views/TopBar.jsx';
+import LoginView from './views/LoginView.jsx';
+import SignUpView from './views/SignUpView.jsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Landing from './views/Landing.jsx';
+import Forecast from "./Forecast.jsx";
 
 function App() {
   const [filesData, setFilesData] = useState({
@@ -36,28 +44,17 @@ function App() {
   }, [filesData]);
 
   return (
-    <>
-      <Header />
-      {dataFetched && <SubHeader demandData={filesData.demand} salesData={filesData.sales} />}
-      <div className="flex-col">
-        {!dataFetched ? (
-          <ImportView onFileSelect={handleFileUpload} />
-        ) : (
-          <div className="flex-row">
-            <div className="float-left w-1/3">
-              <ForecastCardController />
-              <NextMonthForecastController />
-              <ProductDemandForecastController />
-              {/* <InsightController /> */}
-            </div>
-            <div className="float-right w-2/3">
-              <ForecastGraphView />
-            </div>
-          </div>
-        )}
-      </div>
-      <ToastContainer /> {/* Add ToastContainer here */}
-    </>
+      <>
+        <BrowserRouter>
+        <TopBar/>
+          <Route>
+            <Route path='/' element= { <Landing /> }></Route>
+            <Route path='/sign-up' element = {<SignUpView />}> </Route>
+            <Route path='/login' element = {<LoginView />}></Route>
+            <Route path='/forecast' element = {<Forecast />}></Route>
+          </Route>
+        </BrowserRouter>
+      </>
   );
 }
 

@@ -1,6 +1,6 @@
 # helpers.py
 from os import environ
-import os
+import os, re
 from datetime import datetime
 import json
 import pandas as pd
@@ -149,6 +149,47 @@ def date_parser(x):
     return datetime.strptime(x, '%Y-%m')
 
 
+def get_month_name(date_string):
+    month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+                   "November", "December"]
+    date = datetime.strptime(date_string, '%Y-%m')
+    return month_names[date.month - 1]
+
+
+# def get_forecast_insight(data):
+#     api_key = environ.get('GOOGLE_API_KEY')
+#
+#     if not api_key:
+#         return jsonify({'error': 'API key is missing'}), 500
+#
+#     try:
+#         # Configure the client with the API key
+#         palm.configure(api_key=api_key)
+#
+#         models = [m for m in palm.list_models() if 'generateText' in m.supported_generation_methods]
+#         model = models[0].name
+#
+#         prompt = """Explain the sales data fluctuations. Provide the Seasonal Fluctuation, Peak Sales Period, Low Sales Period
+#                         Abrupt Fluctuations, and Potential External Factors. Only provide these answers.""" + data
+#
+#         response = palm.generate_text(
+#             model=model,
+#             prompt=prompt,
+#             temperature=0,
+#             max_output_tokens=300,
+#         )
+#
+#         with open('E:/Software Engineering Final Project/Restore-server/insight.txt', 'w', encoding='utf-8') as f:
+#             f.write(response.result)
+#
+#         return jsonify(response.result)
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
+
+def clean_text(text):
+    return text.strip().replace('\n', ' ')
+
+
 def get_forecast_insight(data):
     api_key = environ.get('GOOGLE_API_KEY')
 
@@ -163,19 +204,61 @@ def get_forecast_insight(data):
         model = models[0].name
 
         prompt = """Explain the sales data fluctuations. Provide the Seasonal Fluctuation, Peak Sales Period, Low Sales Period
-                        Abrupt Fluctuations, and Potential External Factors. Only provide these answers.""" + data
+                    Abrupt Fluctuations, and Potential External Factors focusing on Philippine Market specifically on the
+                    Weather and climate as one, and economic condition . Only provide these answers and don't add 
+                    unnecessary asterisk into the response.""" + data
 
         response = palm.generate_text(
             model=model,
             prompt=prompt,
             temperature=0,
-            max_output_tokens=300,
+            max_output_tokens=500,
         )
 
-        with open('E:/Software Engineering Final Project/Restore-server/insight.txt', 'w', encoding='utf-8') as f:
-            f.write(response.result)
+        # Parse the response result to JSON format
+        insight_text = response.result.strip()
 
-        return jsonify(response.result)
+        # Print response for debugging
+        print("Response Text:", insight_text)
+
+        # Initialize the JSON structure
+        insight_json = {
+            "Seasonal_Fluctuation": "",
+            "Peak_Sales_Period": "",
+            "Low_Sales_Period": "",
+            "Abrupt_Fluctuations": [],
+            "Potential_External_Factors": []
+        }
+
+        # Split the text into sections
+        sections = re.split(r'(.*?):', insight_text)
+
+        current_section = None
+        for i, section in enumerate(sections):
+            if i % 2 == 1:  # Section title
+                current_section = section.strip().replace(' ', '_')
+            else:  # Content
+                if current_section:
+                    content = clean_text(section)
+                    if current_section in ["Abrupt_Fluctuations", "Potential_External_Factors"]:
+                        # Process multi-line sections
+                        lines = [line.strip() for line in content.split('-') if line.strip()]
+                        insight_json[current_section] = lines
+                    else:
+                        # Process single-line sections
+                        insight_json[current_section] = content.strip()
+
+        # Remove empty entries
+        insight_json = {k: v for k, v in insight_json.items() if v}
+
+        # Print the JSON (or save it to a file)
+        print(json.dumps(insight_json, indent=2))
+        # Save the JSON to a file (optional)
+        with open('E:/Software Engineering Final Project/Restore-server/insight.json', 'w', encoding='utf-8') as f:
+            json.dump(insight_json, f, indent=4)
+
+        # return insight_json
+        return jsonify(insight_json)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
