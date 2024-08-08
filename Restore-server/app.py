@@ -87,7 +87,7 @@ def upload_demand_file():
 def train_demand_model_endpoint():
     try:
         # Specify the output folder for saving trained models
-        output_folder = 'models/product_train/'
+        output_folder = 'models/product_csv/'
 
         # Iterate over each CSV file in the specified folder
         for filename in os.listdir('models/product_csv'):
@@ -129,7 +129,7 @@ def train_demand_model_endpoint():
 def predict_demand_endpoint():
     try:
         # Replace 'models/product_train/' with the actual path to your trained models
-        model_folder = 'models/product_train/'
+        model_folder = 'models/product_csv/'
 
         # Create a dictionary to store predictions for each product
         product_predictions = {}
@@ -146,7 +146,7 @@ def predict_demand_endpoint():
         last_available_month = actual_data.index[-1]
 
         # Replace 'models/product_train/' with the actual path to your trained models
-        model_folder = 'models/product_train/'
+        model_folder = 'models/product_csv/'
         sorted_product_predictions = {}
         # Iterate over each pickle file in the specified folder
         for filename in os.listdir(model_folder):

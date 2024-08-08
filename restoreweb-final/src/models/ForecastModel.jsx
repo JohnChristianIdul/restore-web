@@ -1,12 +1,14 @@
+// src/Models/ForecastModel.jsx
+
 import { useReducer } from "react";
 
 // Define initial state for forecast data
 const initialData = {
   forecastData: [],
   productForecastData: [],
-  salesData:[],
-  forecastGraphData:[],
-  insightData:[],
+  salesData: [],
+  forecastGraphData: [],
+  insightData: [],
   isLoading: true,
   error: null,
 };
@@ -26,15 +28,17 @@ const actionTypes = {
 const reducer = (state, action) => {
   switch (action.type) {
     case actionTypes.SET_FORECAST_DATA:
+      console.log("Setting forecast data:", action.newData); // Debug log
       return { ...state, forecastData: action.newData, isLoading: false, error: null };
     case actionTypes.SET_PRODUCT_FORECAST_DATA:
-      return {...state, productForecastData: action.newData, isLoading: false, error: null};
+      console.log("Setting product forecast data:", action.newData); // Debug log
+      return { ...state, productForecastData: action.newData, isLoading: false, error: null };
     case actionTypes.SET_SALES_DATA:
-      return {...state, salesData: action.newData, isLoading: false, error: null};
+      return { ...state, salesData: action.newData, isLoading: false, error: null };
     case actionTypes.SET_FORECAST_GRAPH_DATA:
-      return {...state, forecastGraphData: action.newData, isLoading: false, error: null};
+      return { ...state, forecastGraphData: action.newData, isLoading: false, error: null };
     case actionTypes.SET_INSIGHT_DATA:
-      return {...state, salesData: action.newData, isLoading: false, error: null};
+      return { ...state, insightData: action.newData, isLoading: false, error: null };
     case actionTypes.SET_LOADING:
       return { ...state, isLoading: action.isLoading, error: null };
     case actionTypes.SET_ERROR:
@@ -53,7 +57,7 @@ const useForecastData = () => {
   };
 
   const setProductForecastData = (newData) => {
-    dispatch({type: actionTypes.SET_PRODUCT_FORECAST_DATA, newData});
+    dispatch({ type: actionTypes.SET_PRODUCT_FORECAST_DATA, newData });
   };
 
   const setSalesData = (newData) => {

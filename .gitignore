@@ -3,4 +3,5 @@ node_modules
 /.idea
 .flaskenv
 .env
-Restore-server/.venv
+./.venv
+venv
